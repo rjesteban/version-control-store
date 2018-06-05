@@ -1,4 +1,6 @@
-var database = {
+const NodeCouchDb = require('node-couchdb');
+
+const database = {
   "dev" : {
     "protocol": process.env.DEV_DB_PROTOCOL || "http",
     "host": process.env.DEV_DB_HOST || "127.0.0.1",
@@ -19,6 +21,19 @@ var database = {
     "port": process.env.DB_PORT,
     "username": process.env.DB_USERNAME,
     "password": process.env.DB_PASSWORD
+  },
+  connect (name) {
+    const dbMetaData = database[name || process.env.NODE_ENV];
+    const couch = new NodeCouchDb({
+        host: dbMetaData.host,
+        protocol: dbMetaData.protocol,
+        port: dbMetaData.port,
+        auth: {
+            user: dbMetaData.username,
+            pass: dbMetaData.password
+        }
+      });
+    return couch;
   }
 };
 
