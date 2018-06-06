@@ -2,53 +2,9 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = chai.expect;
 const should = chai.should();
-const database = require('../setup/database.js');
 const app = require('../app');
 
 chai.use(chaiHttp);
-
-describe('Database', () => {
-
-  it('reset database', (done) => {
-    if (process.env.NODE_ENV !== 'test') {
-      should.fail('node environment not set');
-    }
-
-    const couch = database.connect();
-
-    const createDb = function() {
-      couch.createDatabase(process.env.NODE_ENV).then(() => {
-        console.log('successfully created database');
-        done();
-      }, err => {
-        throw err;
-      }).catch(err => {
-        done(err);
-      })
-    };
-
-    couch.listDatabases().then(dbs => {
-      if (dbs.indexOf(process.env.NODE_ENV) !== -1) {
-        couch.dropDatabase(process.env.NODE_ENV).then(() => {
-          console.log('successfully dropped database');
-        }, err => {
-          throw err;
-        }).then(() => {
-          return createDb();
-        }, err => {
-          throw err;
-        }).catch( err=> {done(err);});
-      } else {
-        return createDb();
-        done();
-      }
-    }, err => {
-      throw err;
-    }).catch(err => {
-      done(err);
-    });
-  });
-});
 
 describe('API tests', () => {
 
