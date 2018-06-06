@@ -14,7 +14,7 @@ services:
 
 before_script:
   - curl -X PUT http://localhost:5984/test
-  - curl -X PUT http://localhost:5984/_config/admins/admin -d "'password'"
+  - curl -X PUT http://localhost:5984/_config/admins/admin -d '"password"'
   - curl -X GET http://admin:password@localhost:5984/_all_dbs
 
 
