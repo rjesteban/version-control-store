@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const objectController = require('../controllers/objectController.js');
+const objectController = require('../controllers/objectController');
 
 router.get('/:key', objectController.objectDetail);
 

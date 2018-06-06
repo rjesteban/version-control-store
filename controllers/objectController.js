@@ -1,4 +1,4 @@
-const object = require('../models/object.js');
+const object = require('../models/object');
 
 module.exports.objectDetail = (req, res) => {
   res.send('NOT implemented: Object detail: ' + req.params.key);
