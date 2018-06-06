@@ -14,7 +14,7 @@ services:
 
 before_script:
   - curl -X PUT $TEST_DB_PROTOCOL://$TEST_DB_HOST:$TEST_DB_PORT/$NODE_ENV
-  - curl -X PUT $TEST_DB_PROTOCOL://$TEST_DB_HOST:$TEST_DB_PORT/_config/admins/$TEST_DB_USERNAME -d '$TEST_DB_PASSWORD'
+  - curl -X PUT $TEST_DB_PROTOCOL://$TEST_DB_HOST:$TEST_DB_PORT/_config/admins/$TEST_DB_USERNAME -d '"$TEST_DB_PASSWORD"'
 
 
 branches:
