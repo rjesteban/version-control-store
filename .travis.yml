@@ -16,6 +16,8 @@ before_script:
   - curl -X PUT $TEST_DB_PROTOCOL://$TEST_DB_HOST:$TEST_DB_PORT/test
   - curl -X PUT $TEST_DB_PROTOCOL://$TEST_DB_HOST:$TEST_DB_PORT/_config/admins/admin -d '"'"$TEST_DB_PASSWORD"'"'
   - curl -X GET $TEST_DB_PROTOCOL://$TEST_DB_USERNAME:$TEST_DB_PASSWORD@$TEST_DB_HOST:$TEST_DB_PORT/_all_dbs
+  - node setup/createObjectIndex
+
 
 
 branches:
