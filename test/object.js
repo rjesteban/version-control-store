@@ -50,7 +50,7 @@ describe('API tests', () => {
 
   it('should /POST mykey at 6pm', (done) => {
     chai.request(app)
-      .post('/object/' + object1.key)
+      .post('/object')
       .send(object1)
       .end((err, res) => {
         res.should.have.status(201);
@@ -82,7 +82,7 @@ describe('API tests', () => {
 
   it('should /POST mykey at 6:05pm', (done) => {
     chai.request(app)
-      .post('/object/' + object2.key)
+      .post('/object')
       .send(object2)
       .end((err, res) => {
         res.should.have.status(201);
