@@ -1,9 +1,8 @@
 const database = require('./database')[process.env.NODE_ENV];
 const request = require('request');
 
-const createIndexUrl = database.protocol + '://' + database.username + ':' +
-  database.password + '@' + database.host + ':' + database.port + '/' +
-  process.env.NODE_ENV + '/_index';
+const createIndexUrl = database.protocol + '://' + database.host + ':' +
+  database.port + '/' + process.env.NODE_ENV + '/_index';
 
 const indexBody = {
   'index': {
@@ -17,7 +16,7 @@ const indexBody = {
 
 request.post({
   headers: {'content-type' : 'application/json'},
-  referer: database.host + ':' + database.port,
+  referer: database.host,
   url: createIndexUrl,
   body: JSON.stringify(indexBody)
 }, (err, response, body) => {
