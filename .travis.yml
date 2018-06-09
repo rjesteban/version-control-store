@@ -3,6 +3,13 @@ language: node_js
 node_js:
   - 8.11.1
 
+before_install:
+  # start couchdb 2.x docker instance
+  - docker run -d -p 5984:5984 -p 5986:5986 --name couch couchdb:2.1.1
+  - echo "Starting CouchDB 2.1.1"
+  - until nc -z localhost 5984; do sleep 1; done
+  - echo "CouchDB Started"
+
 install:
   - npm install
 
@@ -10,15 +17,18 @@ script:
   - npm test
 
 services:
-  - couchdb
+  # docker is used for couchdb 2.0 (not currently available as a travis service)
+  - docker
 
 before_script:
+  - npm config set strict-ssl false
+  - curl -X PUT $TEST_DB_PROTOCOL://$TEST_DB_HOST:$TEST_DB_PORT/_users
+  - curl -X PUT $TEST_DB_PROTOCOL://$TEST_DB_HOST:$TEST_DB_PORT/_replicator
+  - curl -X PUT $TEST_DB_PROTOCOL://$TEST_DB_HOST:$TEST_DB_PORT/_global_changes
   - curl -X PUT $TEST_DB_PROTOCOL://$TEST_DB_HOST:$TEST_DB_PORT/test
-  - curl -X PUT $TEST_DB_PROTOCOL://$TEST_DB_HOST:$TEST_DB_PORT/_config/admins/admin -d '"'"$TEST_DB_PASSWORD"'"'
+  - curl -X PUT $TEST_DB_PROTOCOL://$TEST_DB_HOST:5986/_config/admins/admin -d '"'"$TEST_DB_PASSWORD"'"'
   - curl -X GET $TEST_DB_PROTOCOL://$TEST_DB_USERNAME:$TEST_DB_PASSWORD@$TEST_DB_HOST:$TEST_DB_PORT/_all_dbs
-  - curl -X POST $TEST_DB_PROTOCOL://$TEST_DB_USERNAME:$TEST_DB_PASSWORD@$TEST_DB_HOST:$TEST_DB_PORT/$NODE_ENV/_index -H 'Content-Type:application/json' -d '{"index":{"fields":["timestamp"]},"name":"timestamp-index","type":"json"}'
-
-
+  - node setup/createObjectIndex
 
 branches:
   only:

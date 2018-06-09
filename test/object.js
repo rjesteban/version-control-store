@@ -48,12 +48,33 @@ describe('API tests', () => {
       });
   });
 
+  it('should return 400 on /POST for empty request body', (done) => {
+    chai.request(app)
+      .post('/object')
+      .send('')
+      .end((err, res) => {
+        res.should.have.status(400);
+        done();
+      });
+  });
+
+  it('should return 400 on /POST for malformed request body', (done) => {
+    chai.request(app)
+      .post('/object')
+      .send({'nokey': 'nokey',
+        'value': '1'})
+      .end((err, res) => {
+        res.should.have.status(400);
+        done();
+      });
+  });
+
   it('should /POST mykey at 6pm', (done) => {
     chai.request(app)
-      .post('/object/' + object1.key)
+      .post('/object')
       .send(object1)
       .end((err, res) => {
-        res.should.have.status(201);
+        res.should.have.status(200);
         res.body.should.be.eql(object1);
         done();
       });
@@ -82,10 +103,10 @@ describe('API tests', () => {
 
   it('should /POST mykey at 6:05pm', (done) => {
     chai.request(app)
-      .post('/object/' + object2.key)
+      .post('/object')
       .send(object2)
       .end((err, res) => {
-        res.should.have.status(201);
+        res.should.have.status(200);
         res.body.should.be.eql(object2);
         done();
       });
