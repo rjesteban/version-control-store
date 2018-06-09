@@ -1,7 +1,6 @@
 const database = require('../setup/database');
 const moment = require('moment')
 
-
 module.exports.save = (object, done) => {
   const dbName = process.env.NODE_ENV;
   const couch = database.connect();
