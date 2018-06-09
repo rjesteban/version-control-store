@@ -13,19 +13,19 @@ module.exports.objectDetail = (req, res) => {
     timestamp = moment().toISOString();
   }
 
-  const objectBody = {
+  const requestBody = {
     'key': req.params.key,
     'timestamp': timestamp
   };
 
-  object.findOne(objectBody, (err, result) => {
+  object.findOne(requestBody, (err, result) => {
     if (err) {
       if (err.code = 'NODOCFOUND') {
         return res.status(404).send(err);
       }
       return res.status(500).send(err);
     }
-    return res.status(201).send(result);
+    return res.status(200).send(result);
   });
 };
 
@@ -50,17 +50,24 @@ module.exports.objectPost = (req, res) => {
     timestamp = moment().toISOString();
   }
 
-  const objectBody = {
-    key: body.key,
-    value: body.value,
-    timestamp: timestamp
-  }
+  const requestBody = {
+    'key': body.key,
+    'value': body.value,
+    'timestamp': timestamp
+  };
 
-  object.save(objectBody, (err, result) => {
+  object.save(requestBody, (err, result) => {
     if (err) {
       console.error(err);
       return res.status(500).send(err);
     }
-    return res.send(objectBody);
+
+    const responseBody = {
+      'key': result.key,
+      'value': result.value,
+      'timestamp': moment(result.timestamp).utcOffset(0).format('X')
+    };
+
+    return res.status(200).send(responseBody);
   });
 };

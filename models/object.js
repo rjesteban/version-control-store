@@ -4,17 +4,23 @@ module.exports.save = (object, done) => {
   const dbName = process.env.NODE_ENV;
   const couch = database.connect();
 
+  const objectBody = {
+    'key': object.key,
+    'value': object.value,
+    'timestamp': object.timestamp
+  };
+
   couch.uniqid().then((ids) => {
     object._id = ids[0];
-    couch.insert(dbName, object).then(result => {
-      console.log(result.data);
-      return done(null, result.data);
-    }, err => {
+    couch.insert(dbName, object).then((result) => {
+      return done(null, objectBody);
+    }, (err) => {
       return done(err);
     });
-  }, err => {
+  }, (err) => {
     return done(err);
   });
+
 };
 
 module.exports.findOne = (object, done) => {
@@ -34,22 +40,22 @@ module.exports.findOne = (object, done) => {
 
   couch.mango(dbName, mangoQuery, params).then((result) => {
     const resultDoc = result.data.docs[0];
-    const doc = {};
     if (resultDoc) {
-      doc.key = resultDoc.key,
-      doc.value = resultDoc.value
+      const doc = {
+        'key': resultDoc.key,
+        'value': resultDoc.value
+      };
       return done(null, doc);
     }
-
     const error = {
       code:'NODOCFOUND',
       body: {
-        'error':'document_not_found',
-        'reason':'Unable to get key'
+        'error': 'document_not_found',
+        'reason': 'Unable to get key'
       }
     };
     return done(error);
-  }, err => {
+  }, (err) => {
     return done(err);
   });
 };
