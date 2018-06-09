@@ -4,7 +4,7 @@
   "description": "a version controlled key-value store with an HTTP API we can query that from",
   "main": "app.js",
   "scripts": {
-    "test": "mocha test/object.js --timeout 10000 --exit"
+    "test": "mocha test/object.js --timeout 10000"
   },
   "repository": {
     "type": "git",
