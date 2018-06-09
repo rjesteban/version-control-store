@@ -30,13 +30,6 @@ before_script:
   - curl -X GET $TEST_DB_PROTOCOL://$TEST_DB_USERNAME:$TEST_DB_PASSWORD@$TEST_DB_HOST:$TEST_DB_PORT/_all_dbs
   - node setup/createObjectIndex
 
-after_success:
-  - node app
-  - echo 'stress testing index...'
-  - ./node_modules/node-ab/bin/nab http://127.0.0.1:$PORT/
-  - echo 'stress testing get object'
-  - ./node_modules/node-ab/bin/nab http://127.0.0.1:$PORT/object/mykey
-
 branches:
   only:
     - master
