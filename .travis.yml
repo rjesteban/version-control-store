@@ -5,7 +5,7 @@ node_js:
 
 before_install:
   # start couchdb 2.x docker instance
-  - docker run -d -p 5984:5984 --name couch couchdb:2.1.1
+  - docker run -d -p 5984:5984 -p 5986:5986 --name couch couchdb:2.1.1
   - echo "Starting CouchDB 2.1.1"
   - until nc -z localhost 5984; do sleep 1; done
   - echo "CouchDB Started"
