@@ -31,6 +31,7 @@ before_script:
   - node setup/createObjectIndex
 
 after_success:
+  - node app
   - echo 'stress testing index...'
   - ./node_modules/node-ab/bin/nab http://127.0.0.1:$PORT/
   - echo 'stress testing get object'
