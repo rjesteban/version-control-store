@@ -1,7 +1,6 @@
 const object = require('../models/object');
 const moment = require('moment');
 
-
 module.exports.objectDetail = (req, res) => {
   let timestamp = req.query.timestamp;
   if (timestamp) {
