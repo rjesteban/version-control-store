@@ -1,3 +1,4 @@
+require('dotenv').config();
 const database = require('./database')[process.env.NODE_ENV];
 const request = require('request');
 
@@ -16,7 +17,7 @@ const indexBody = {
 };
 
 request.post({
-  headers: {'content-type' : 'application/json'},
+  headers: {'content-type': 'application/json'},
   url: createIndexUrl,
   body: JSON.stringify(indexBody)
 }, (err, response, body) => {
